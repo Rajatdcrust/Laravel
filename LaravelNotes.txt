@@ -1,0 +1,523 @@
+-laravel is an open source, php based framework invented by taylor otwell
+- in general a framework is set of rules,ideas to deal with problem
+- a software framework is a platform for developing software applications
+-php invented by rasmus lerdorf
+
+- why we use laravel or other framework?
+- it comes with built in packages,classes,function and configuration
+-like email,handling xl files download,authorization,database config,Object relational model
+
+- what is composer?
+-composer is a package manager used to install various packages required for project
+
+
+1. to create laravel project
+-composer create-project laravel/laravel project_name
+
+-to run project 
+  php artisan serve
+
+=======================================================================
+2. Directory structure
+inside app
+- app\console\kernel.php for making commands
+- app\exception\handler.php to handle runtime exceptions
+-app\http\controlers or middleware and kernel.php
+- middleware act as security guard control access such as login
+- we have to define in its kernel.php
+- models have classes,table information database related things are handled here
+-providers have files for all internal and external services used in project
+
+inside bootstrap
+-cache to cache information
+- it is mainly used for speed up the applications
+
+inside configuration
+-there are files for each configuration like database,mail,cache,authentication etc.
+
+inside database
+-there is factory and migrations, factory for testing data and 
+migration for creating database table 
+
+inside public there is index.php which is loaded first and some other file for  seo
+
+resources/views have template files
+
+routes have web.php which defines which page to open on particular route
+
+webpack.mix to integerate other technology like react
+
+========================================================================
+3. Routing and routing files
+-we can deifine our routes in routes/web.php
+-there is function called any which take request from all methods
+
+-syntax  Route :: get('/your_route',function(){
+  //do what you want
+  echo "first route in laravel" ;
+})
+
+- page expired error in case of post because of token
+
+-in case of api routes will have /api/your api
+-to take user input through Route
+/route/{name}/{id?}
+
+- if you want to go to view along with some data
+$data = compact('name','id')
+gives an array
+return view('myView')->with($data)
+
+===================================================================
+4  Blade template
+-Blade is  template engine in laravel which is used to display
+  data in the browser it handle frontend particular
+-create file inside resources/views with extension .blade.php
+-to display inside blade instead of echo we use {{$name}} it does not decode html
+-{!!$name!!} it decodes html
+
+-conditional directives
+-@if @endif @elseif @else
+-@unless oopsite of if @endunless
+-@isset @endisset
+
+ @if( $selectSummaryTable == 'MemType' )
+
+                Summary of Members
+
+ @elseif( $report_type == ['Category', 'CivilStatus'] )
+
+                Baptism Report for {{ $report_date }}   
+
+ @endif
+
+
+-loop directives
+
+@for($i = 0;$i<10;$i++)
+ {{$i}};
+@endfor
+
+
+@php $i = 0 @endphp
+@while(condition)
+{{$i}}
+@php $i++ @endphp
+@endwhile
+
+@foreach($arr $el)
+{{$el}}
+@endforeach
+
+@break;
+@continue;
+
+-for comments
+{{-- write here --}}
+
+@include to include file in blade template
+
+@yield(section_name) for changing main  content based on section
+it acts as placeholder for section based on name it will produce output
+@section(section name) to define particular section
+define section with same name used in yield in different files 
+@extends to add to main layout
+
+@stack('title) to push some components 
+@push(title)
+tags ,component etc
+@endpush
+
+why stack if we have section?
+because we can push multiple time whereas section is defined once
+
+===================================================================================
+5. Controllers 
+- controllers are class based php file
+- they provide communication between view and database
+-controllers are used to group related request and their logic handling in one class
+-for example UserController have logic for login,logout,forgot password etc.
+
+=>types of controllers
+-in laravel there are 3 types of controllers
+a. Basic Controllers - it does not have any pre defined functions only class is there
+b.Single Action Controllers - for performing one Action
+c. Resource Controllers - for all crud operations it will have method
+   we just have to write the logic
+
+to make basic controllers
+=>php artisan make:controller ContollerName
+
+=> to call controller method inside web.php
+-first include controllser with proper namesapce like
+use App\Http\Controllers\DemoController;
+
+-new syntax to call method
+Route ::get('/',[DemoController::class,'index']);
+
+-old syntax
+Route :: get('/about','App\Http\Controllers\DemoController@about');
+
+=>for single action controller
+php artisan make:controller ContollerName  --invokable
+
+no need of array in case of single action
+Route ::get('/',DemoController::class);
+
+
+
+=> for resource controller
+
+php artisan make:controller ContollerName  --resource
+
+to use all routes in web.php define
+no need to define create,destrory ,edit separately
+=>Route :: resource('/photo',Controller :: class)
+
+**we cannot change the name of method in the resource controller
+
+
+=====================================================================================
+6.***********Submit Form Data *********************
+
+<form action="{{url('/')}}/register" method="post">
+     @csrf   => required for post method  else page not found
+
+            //fields
+
+</form>
+
+=> url('/') for base url
+=>$request->all() to get all submitted data along with token
+
+in controller you can access using ---->
+public function register(Request $request)
+    {
+      echo "<pre>";
+      print_r($request->all());
+    }
+
+====================================================================================
+*******************7. Form Validation *************************************
+to valiadte request params we use
+$request->validate(
+        [
+          'name' => 'required',
+          'email' => 'required | email',
+          'password' => 'required',
+          'password_confirmed' => 'required'
+        ]
+      );
+
+**by default messages are provided in 
+example-app\vendor\laravel\framework\src\Illuminate\Translation\lang\en\validation.php
+
+**for custom msg copy file in resources/lang/en/validation.php
+
+$errors->all() will show array of errors on the page
+
+//for particualr error inside span tag use
+@error('name')
+
+{{$message}}   automatically understand 
+
+@enderror
+
+
+**for  password confirmation two ways
+a->
+in validate function
+'password' =>'required | confirmed'
+'password_confirmation' => 'required'   name should be similar
+
+
+->other way for custom  names
+'password' =>'required'
+'password_custom' => 'required|same : password'   
+
+*** spaces are not allowed inside 'same : password' remember mistake
+
+===================================================================================
+****************************8. components in laravel ******************************
+-components are used for designing template for code reusabilty like compponent in react
+
+- to make component use command 
+ php artisan make:component Component_Name  =>1st letter capital
+
+ -it will create two files
+ =>input.blade.php inside resources/views/components to store component html
+ =>input.php inside app/View/components define varibale inside constructor to use later in blade file
+
+=> to use component in html file use <x-input/> tag where input is name of component
+=>component name should be unique
+
+=>to pass params <x-input type="text" name="name" label="Enter Name" />
+=>you have define in constructor 
+of input.php
+
+** note while paasing params there should not be any space
+
+public function __construct($type,$name,$label)
+    {
+        //
+        $this->name = $name;
+        $this->type = $type;
+        $this->label = $label;
+    }
+
+=> in input.blade.php
+we can use these variables
+
+<div class="form-group">
+    <label for="">{{$label}}:</label>
+    <input type="{{$type}}" class="form-control" id="" name="{{$name}}">
+    <sapn class="text-danger">
+
+        <!-- @error('name')
+        {{$message}}
+        @enderror -->
+    </sapn>
+</div>
+
+=> to pass varaible in component
+<:demo="$demo">
+
+=========================================================================================
+**********************  9. DataBase Configuration and Migrations ************************
+make changes in .env file and run the command
+php artisan config:Cache   no space required
+
+then run php artisan migrate comand to run migrations
+enable mysql and pdo extension before running migrations
+
+=>to create table using migrations
+php artisan make:migration create_tableName_table
+ =>it will create migration in database/migrations
+ with two function up and down up for creation and down will drop table if exists in this case
+ $table->timestamps() will create two column as created_at and updated_at
+
+ =>there are various type boolean,text,enum,string,id,date etc see doucumentation
+ =>sometimes we have to move to previous migration run
+ php artisan migrate:rollback
+ => sometimes we need to delete all the migration and run in this case use
+ php artisan migrate:refresh
+
+ =>if we want to add column to existing table
+ use php artisan make:migration add_columns_to_tableName_table
+
+ =======================================================================================
+ **************************** 10. Model in laravel *************************************
+-Models are class based php files
+-Laravel has Eloquent ORM(Object Relational Mapping) to easily interact with database
+- each model interact with one table
+
+-to make model run the command
+-php artisan make:model ModelName 1st letter should be capital
+-it will create file ModelName.php in app/Models
+-in this class it is mandatory to define 2 things
+-protected $table = 'customers'; protected $primaryKey = 'customer_id'
+-to fetch all data
+$customers = Customers :: all();
+
+-to convert to array ->toArray()
+
+-can pass --migration optional param to make model command to create migration as well
+
+====================================================================================
+**************** 11. Insert Query using Model in laravel ************************
+in the method handling form submit request
+-create an object of model of the table you want to Insert
+-save data int o object using -> operator like
+$customer = new Customers;
+$customer->email = $request['email];
+// set other field 
+md5(password) to encrypt
+$customer->save();
+
+Select Query using laravel
+=> $customers = Customer :: all();
+=> here it will return an object
+=> to convert to array can use toArray but through error if no records found
+=>return redirect('/path) to redirect after saving
+<table>
+  <thead>
+    <tr>
+     <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td></td>
+    </tr>
+  <tbody>
+</table>
+
+=> remember to use  return redirect()  else will not work
+
+=====================================================================================
+******************* 12.Routing through buttons and anchor tags **********************
+<a  href = "{{url('/register')}}">
+</a>
+
+using route with name=>
+<a  href = "{{route('customer.create')}}">
+</a>
+
+it will not show 404 as it will first check for route
+
+=> deleting record in laravel 
+-> remember on clicking a link get method is called if you want to use any ohter like delete use ajax
+
+->$customer = Customer :: find($id) is used to find record from database 
+-> if(!is_null($customer))
+{
+  $customer->delete();
+}
+
+then redirect to view page
+=> in route('name',['id'=>4]) we can pass params 
+
+// in case of update similar to save just we have to find customer instead of creating
+new object
+
+=> 2 routes will be there one for edit to open form filled with data
+=> one for update
+
+========================================================================================
+*************************** 13. Helper in laravel **************************************
+=> helpers are the files which are used to store frequently used functions in the project
+=>create a file inside app named helper.php
+=>add file in composer.json autoload
+files :[
+  "app/"helper.php
+]
+then run the command below to refresh the configuration
+composer dump-autoload
+
+=>function or anything else defined in helper.php can be accessed throughout the program
+if(!function_exists('p'))
+{
+  public function p($data)
+  {
+    echo "<pre>";
+    print_r($data);
+    echo "</pre>";
+  }
+}
+
+==>date functions
+date_create("2024-1-5") convert string to date object
+date_format($object,$format);
+date($format,$timestamp);
+date_add($date,date_interval_create_from_date_string("40 days"));
+checkdate(d,m,y);
+
+$diff=date_diff($date1,$date2);
+echo $diff->format("%R%a days");
+
+========================================================================================
+*************************** 14. Accessor and mutatator in laravel **************************************
+-Accessor are gettter method in models which are used to modify data when we get data from
+database
+for attribute user_name
+syntax
+public function getUserNameAttribute($value)
+{
+  //transform and return
+  return ucwords();
+}
+
+-Mutator are the setter method which are used to transform value when setting value
+in database
+public function setUserNameAttribute($value)
+{
+  $this->attributes['user_name'] = ucwords($value);
+}
+
+====================================================================================
+**************** 15 Session in laravel ****************************************
+predefined session key like token,previous url,old ,new data
+to add multiple values in session
+session([k=>v]);
+to check if key exixts
+session()->has(key)
+session->get('key);
+session->flush() to clear all session data
+Route :: get('/set-session',function(Request $request){
+    $request->session()->put('user_name','Rajat');
+    session()->put('id','1');
+    session()->flash('status','success');
+   return  redirect('/show-session');
+
+
+});
+Route :: get('/show-session',function(){
+    $session = session()->all();
+    p($session);
+});
+Route :: get('/delete-session',function(){
+    session()->forget(['user_name','id']);
+    return redirect('/show-session');
+});
+
+
+=> in session.php browser close setting ,lifetime etc
+=>flash is used for one time 
+
+======================================================================================
+******************** 16. Soft Delete in Laravel **************************************
+- laravel provides trait named softDelete for softdelete feature
+-steps
+a) add namespace at top in model of table use Illuminate/DataBase/Eloquent/softDeletes
+b) below  hasFactory add use statement
+c) now make a migration to  add_deleted_at_to_customers_table 
+in migration up add
+$table->softDeletes()
+int down
+$table->dropSoftDeletes()
+
+=>then below function are used
+withTrashed()
+onlyTrashed()
+restore()
+forceDelete()
+=> for interview must do traits,inhertance,oops,interface,abstract class,api request method
+and differce, ajax call
+
+=========================================================================================
+************************ 17. converting html website into laravel ***********************
+- copy all html files inside resources/views make frontend if requred change extension .blade.php
+-copy all js,css,images other files in public/make folder 
+-make controller for each page and a route calling index method
+-to reuse things make 3 layouts header,foooter,main content
+-make all pages using these layouts using @include,@yield,@section,@extends
+-change style sheet path in header using url('/frontend/same)
+-change image path
+-change js path
+-add other pages routes such as about us in the headers
+======================>
+Collective Form package in laravel
+first install the package and use function to vreate form
+like 
+{!! Form::open(['url' => url('/'),'method' => 'GET']) !!}
+
+{!! Form::text('name','abc',[
+        'id' => 'name',
+        'class' => 'form-control'
+    ]);!!}
+
+{!!  Form::select('size', ['L' => 'Large', 'S' => 'Small'], null, ['placeholder' => 'Pick a size...']);!!}
+
+it is outdated nowdays we can use  spatie-laravel -html form 
+
+===========================================================================================================
+******************************18. save uploaded file in laravel *******************************************
+-first specify enctype in form 
+-to get fileNAme use $request->file('file)->getClientOriginalName()
+-for extension getClientOriginalExtension()
+-store('upload') inside storage/app
+-for customer name use storeas('folder',fileNAme)
+
+git token2 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
+
+
