@@ -36,17 +36,43 @@
         </div>
     </nav>
 
-
-    <div class="container mt5">
-        <div class="d-flex justify-content-between mb-3">
-            <h2>User Information</h2>
-            <a href = "{{ url('customer/trash') }}">
-                <button class="btn btn-primary">View Trash</button>
-            </a>
-            <a href = "{{ route('customer.create') }}">
-                <button class="btn btn-primary">Add Customer</button>
-            </a>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h2>User Information</h2>
+                    <div>
+                        <a href="{{ url('customer/trash') }}" class="btn btn-primary ml-2">View Trash</a>
+                        <a href="{{ route('customer.create') }}" class="btn btn-primary ml-2">Add Customer</a>
+                    </div>
+                </div>
+            </div>
         </div>
+    </div>
+    
+    <div class="container">
+        <div class="row">
+            <div class="col-8">
+                <form action = "" method = "GET">
+                    <div class="form-group row">
+                        <div class="col-sm-8">
+                            <input type="search" class="form-control" id="searchField" name="searchField" placeholder="Enter search term" value ={{$search}}>
+                        </div>
+                        <div class="col-sm-2">
+                            <button type="submit" class="btn btn-primary btn-block">Search</button>
+                        </div>
+                        <div class="col-sm-2">
+                            <a href="{{url('/customer/view')}}">
+                                <button type="button" class="btn btn-primary btn-block">clear</button>
+                            </a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="container mt-5">
+        
         <table class="table table-bordered">
             <thead>
                 <tr>

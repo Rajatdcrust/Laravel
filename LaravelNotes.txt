@@ -516,8 +516,28 @@ it is outdated nowdays we can use  spatie-laravel -html form
 -to get fileNAme use $request->file('file)->getClientOriginalName()
 -for extension getClientOriginalExtension()
 -store('upload') inside storage/app
--for customer name use storeas('folder',fileNAme)
+-for custom name use storeas('folder',fileName)
 
-git token2 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
+=>for interview sql imp query,normalisation,solid principles etc
+===========================================================================================================
+************************* 19. Faker and Seeder in laravel *************************************************
+- faker and seeder are used to generate dummy data for testing
+- for example you want to check search and pagination then faker and seeder
+ help to create data
+
+ steps->
+ =>php artisan make:seeder CustomersSeeder
+ =>will create a file in database/seeders
+ - inside databaseSeeder.php add $this->call([yourSeeder :: class]); inside run function
+ use App\Models\Customers;
+ use Faker\Factory as  Faker;
+ $faker = Faker :: create();
+ -to run use command php artisan db:seed
+
+ =>for search 
+  $customers = Customers:: where('name', 'LIKE',"%$search%")->orWhere('email','LIKE',"%$search%")->get(); 
+        
+
+
 
 
