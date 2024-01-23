@@ -67,7 +67,7 @@ class CustomerContoller extends Controller
         }
         else
         {
-            $customers = Customers::all();
+            $customers = Customers::paginate(20);
         }
         $data = compact('customers','search');
         return View('customer-view')->with($data);

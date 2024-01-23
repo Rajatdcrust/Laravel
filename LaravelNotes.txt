@@ -536,7 +536,22 @@ it is outdated nowdays we can use  spatie-laravel -html form
 
  =>for search 
   $customers = Customers:: where('name', 'LIKE',"%$search%")->orWhere('email','LIKE',"%$search%")->get(); 
-        
+  ========================================================================================================
+  ***************** 20 Built in pagination in laravel *****************************************************  
+  $customers = Customers :: paginate(no_of_records_per_page);
+  inside view file use
+ {{$customers->links('pagination::bootstrap-5')}}
+ -> to group routes we can use 
+ Route :: group(['prefix'=>'/customer',function(){
+  //define routes here all will have prefix customer
+ }])
+ =========================================================================================================
+ ************************ 21. Localisation in Laravel ****************************************************
+ -if we want data to be dispalyed in multiple language
+ -use @lang('lang.key')
+ -inside resources/lang define folder for each language with lang.php return key
+ -value if that file
+ -now to change lang on clicking link use App :: setLocale($folderName of lang);
 
 
 

@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\CustomerContoller;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\App;
+
 use App\Http\Controllers\DemoController;
 use App\Http\Controllers\PhotoController;
 use App\Http\Controllers\RegistrationController;
@@ -19,6 +21,13 @@ use Illuminate\Http\Request;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+//using localisation
+Route ::get('/localisation/{lang}',function($lang){
+    App :: setlocale($lang);
+    return view('localisationTest');
+});
+
+// ******************************************************************************
 // understanding session
 
 Route :: get('/set-session',function(Request $request){

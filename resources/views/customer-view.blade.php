@@ -117,6 +117,11 @@
                 <!-- Add more rows with data as needed -->
             </tbody>
         </table>
+        <div class="row">
+
+            {{$customers->links('pagination::bootstrap-5')}}
+            {{-- {{ $customers->onEachSide(5)->links() }} --}}
+        </div>
     </div>
 
     <!-- Bootstrap JS and Popper.js (required for some Bootstrap components) -->
