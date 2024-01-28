@@ -550,9 +550,16 @@ it is outdated nowdays we can use  spatie-laravel -html form
  -if we want data to be dispalyed in multiple language
  -use @lang('lang.key')
  -inside resources/lang define folder for each language with lang.php return key
- -value if that file
+  value array in that file
  -now to change lang on clicking link use App :: setLocale($folderName of lang);
 
+==========================================================================================================
+************************* 22. Stubs in Laravel ***********************************************************
+-whenever we create model,migration, controller or anything in laravel
+using artisan commands it follows a template like it has class,some use statement,
+and some functions this is already defined in a template called stub we can change stub
+as per requirements to see stubs inside folder run
+-php artisan stub:publish no spaces allowed after stub :
 
-
+=> to add foreign key references in laravel model
 
