@@ -562,4 +562,26 @@ as per requirements to see stubs inside folder run
 -php artisan stub:publish no spaces allowed after stub :
 
 => to add foreign key references in laravel model
+-let us consider there is one parent table called group with group_id,name,description
+-and we have another table members with member_id,name,email,city,timestamps
+-since members are associated with group therefore primaryKey group_id of group table serve
+as froreign key in members table
 
+to do that in laravel we use for table members
+$table->unsignedBigInteger('group_id');
+$table->foreign('group_id')->references('parent group_id')->on('parent table groups');
+
+======================================================================================
+***************** 23.Relationships in laravel ***************************************
+-->one to one 
+case 1 group have one member 
+then if along with members we want group info as well then inside Member model make function
+getGroup(){
+  return $this->hasOne('App\Models\Group','groupId','grpId');
+}
+2 argument current model local key
+=>now while fetching data in controller
+ function index()
+    {     
+        return Member ::with('getGroup')->get();
+    }

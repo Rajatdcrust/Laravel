@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\App;
 use App\Http\Controllers\DemoController;
 use App\Http\Controllers\PhotoController;
 use App\Http\Controllers\RegistrationController;
+use App\Http\Controllers\RelationController;
 use App\Http\Controllers\SingleActionController;
 use App\Models\Customers;
 use Illuminate\Http\Request;
@@ -21,6 +22,10 @@ use Illuminate\Http\Request;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+//==============================================================================
+// using one to one relationship
+Route :: get('/relation',[RelationController :: class,'index']);
+// ================================================================================
 //using localisation
 Route ::get('/localisation/{lang}',function($lang){
     App :: setlocale($lang);
