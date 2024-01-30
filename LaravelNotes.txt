@@ -579,9 +579,16 @@ then if along with members we want group info as well then inside Member model m
 getGroup(){
   return $this->hasOne('App\Models\Group','groupId','grpId');
 }
-2 argument current model local key
+3rd argument current model local key
 =>now while fetching data in controller
  function index()
     {     
         return Member ::with('getGroup')->get();
     }
+=>for one to many Relationships
+one group can have multiple members
+function member(){
+       return  $this->hasMany('App\Models\Member','grpId','groupId');
+    }
+
+=>remember to use return statement 

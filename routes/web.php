@@ -25,6 +25,8 @@ use Illuminate\Http\Request;
 //==============================================================================
 // using one to one relationship
 Route :: get('/relation',[RelationController :: class,'index']);
+Route :: get('/relation/group',[RelationController :: class,'group']);
+
 // ================================================================================
 //using localisation
 Route ::get('/localisation/{lang}',function($lang){

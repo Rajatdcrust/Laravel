@@ -9,4 +9,7 @@ class Group extends Model
 {
     use HasFactory;
     protected $primaryKey = 'groupId';
+    function member(){
+       return  $this->hasMany('App\Models\Member','grpId','groupId');
+    }
 }
