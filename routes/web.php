@@ -3,7 +3,7 @@
 use App\Http\Controllers\CustomerContoller;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\App;
-
+use App\Http\Middleware\WebGuard;
 use App\Http\Controllers\DemoController;
 use App\Http\Controllers\PhotoController;
 use App\Http\Controllers\RegistrationController;
@@ -24,7 +24,7 @@ use Illuminate\Http\Request;
 */
 //==============================================================================
 // using one to one relationship
-Route :: get('/relation',[RelationController :: class,'index']);
+Route :: get('/relation',[RelationController :: class,'index'])->middleware(WebGuard :: class);
 Route :: get('/relation/group',[RelationController :: class,'group']);
 
 // ================================================================================

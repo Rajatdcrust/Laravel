@@ -591,4 +591,48 @@ function member(){
        return  $this->hasMany('App\Models\Member','grpId','groupId');
     }
 
-=>remember to use return statement 
+=>remember to use return statement
+=====================================================================================
+******************* 24 middleware in laravel ****************************************
+=>middleware provides a mechanism to filter the request coming to web application
+=>they act as inspector
+=>to make middleware use php artisan make:middleware MiddlewareName
+=>global middleware is the middleware which is applied on each http request
+=> to make a middleware global define its class in $middleware property of app/http/kernel.php
+=> middleware can be used to restrict access based on various logic like in login,forgot password etc
+
+=>to add middleware on single route we can use ->middleware(path::class) or ->middleware(alias)
+for group middleware
+Route::prefix('prefix')->middleware(['mymiddleware1', 'mymiddleware2'])->group(function () {
+    // Define your routes here
+    Route::get('/route1', [Controller1::class, 'method1']);
+    Route::post('/route2', [Controller2::class, 'method2']);
+});
+
+to skip particualr routes from group use withoutMiddleware
+Route::get('/profile', function () {
+        // ...
+    })->withoutMiddleware([EnsureTokenIsValid::class]);
+==============================================================================================
+*********************** 25. Custom command in laravel ***************************************
+=>to make a command in laravel first run the below command to create file for command
+php artisan make:command GetDBName
+=> change the  signature and description 
+=> if want to pass params then in signature use {param1}
+=>to access argument $user_id = $this->arguments()['userId'];
+below is handle funciton to get db name
+public function handle()
+    {
+        $dbName = DB :: connection()->getDatabaseName();
+        $this->info("Current DB Name Is $dbName");
+    }
+
+
+Route model binding we can directly bind the param we are receiving from url
+with its data in model it should be primary key
+while executing functionif we use
+function getGroup(Group $id) // information yhi mil jayegi
+{
+return $id;
+}
+can be used when we want to update the record
